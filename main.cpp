@@ -22,8 +22,10 @@ std::string exec(const char* cmd) {
 
 int main() {
   printf("hi\n");
-  std::string result = exec("wget https://erm.cool");
+  std::string result = exec("wget https://www.n-tv.de/");
   printf("done\n");
+  std::FILE* file = fopen("index.html","r");
   return 1;
 }
 
+//grep -oE 'https?://[^[:space:]]+'
