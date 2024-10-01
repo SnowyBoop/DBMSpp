@@ -1,31 +1,46 @@
 #include <cstdlib>
-#include <cstdio>
-#include <cstdio>
 #include <iostream>
-#include <memory>
-#include <stdexcept>
+#include <fstream>
 #include <string>
-#include <array>
 
-std::string exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) {
-        throw std::runtime_error("popen() failed!");
-    }
-    while (fgets(buffer.data(), static_cast<int>(buffer.size()), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
-    return result;
+std::string loadDB(std::string dbName) {
+  std::cout << "starting db load\n";
+  std::ifstream database;
+  database.open (dbName);
+
+  if(database.is_open()) {
+
+    std::string rawDB = "file";
+
+    getline(database,rawDB);
+
+    return rawDB;
+  }
+  
+  return "error";
+}
+
+void createDB (std::string name) {
+  std::cout << "starting db create\n";
+  std::ofstream newDB;
+  newDB.open (name);
+  newDB << "test meow";
+  newDB.close();
+
+  return;
 }
 
 int main() {
-  printf("hi\n");
-  std::string result = exec("wget https://www.n-tv.de/");
-  printf("done\n");
-  std::FILE* file = fopen("index.html","r");
-  return 1;
-}
 
-//grep -oE 'https?://[^[:space:]]+'
+  std::cout << "starting...\n";
+
+  createDB("test.lul");
+  std::string returnVal;
+  returnVal = loadDB("test.lul");
+  
+  std::cout << returnVal << "\n";
+
+  
+  return 0;
+
+}
