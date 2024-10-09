@@ -1,46 +1,51 @@
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
-#include <string>
+#define PWM_FREQ 100 //hertz
 
-std::string loadDB(std::string dbName) {
-  std::cout << "starting db load\n";
-  std::ifstream database;
-  database.open (dbName);
+void setup() {
+  pinMode(15, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(14), inputPressed, FALLING);
+}
 
-  if(database.is_open()) {
 
-    std::string rawDB = "file";
+void loop() {
+  digitalWrite(15, HIGH);  // turn the LED on (HIGH is the voltage level)
+  delay(100);                      // wait for a second
+  digitalWrite(15, LOW);   // turn the LED off by making the voltage LOW
+  delay(100);                      // wait for a second
 
-    getline(database,rawDB);
+  int periodInMicro = 1000000/PWM_FREQ;
+  int onPeriod = 0;
+  int offPeriod = 0;
+  float divHunPeriod = 0;
+  
+  divHunPeriod = periodInMicro/100;
 
-    return rawDB;
+  for(int i = 0; i<100; i++) {
+
+
+
+    onPeriod = (i*divHunPeriod);
+    offPeriod = periodInMicro - onPeriod;
+
+    for(int k = 0; k<10; k++) {
+      delayMicroseconds(onPeriod);
+      digitalWrite(15,LOW);
+      delayMicroseconds(offPeriod); 
+      digitalWrite(15,HIGH);
+    }
+
   }
-  
-  return "error";
+
+
+
+  digitalWrite(15, HIGH);  // turn the LED on (HIGH is the voltage level)
+  delay(1000);                      // wait for a second
+  digitalWrite(15, LOW);   // turn the LED off by making the voltage LOW
+  delay(1000);   
+
 }
 
-void createDB (std::string name) {
-  std::cout << "starting db create\n";
-  std::ofstream newDB;
-  newDB.open (name);
-  newDB << "test meow";
-  newDB.close();
-
-  return;
-}
-
-int main() {
-
-  std::cout << "starting...\n";
-
-  createDB("test.lul");
-  std::string returnVal;
-  returnVal = loadDB("test.lul");
-  
-  std::cout << returnVal << "\n";
+void inputPressed() {
 
   
-  return 0;
 
 }
