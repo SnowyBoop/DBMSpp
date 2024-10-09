@@ -1,4 +1,6 @@
-#define PWM_FREQ 100 //hertz
+#define PWM_FREQ 200 //hertz
+#define  PRE_DEV_ID 100 // device ID -> 8 bits
+#define PRE_SERV_ID 255 // server id -> 8 bits
 
 void setup() {
   pinMode(15, OUTPUT);
@@ -7,16 +9,19 @@ void setup() {
 
 
 void loop() {
-  digitalWrite(15, HIGH);  // turn the LED on (HIGH is the voltage level)
-  delay(100);                      // wait for a second
-  digitalWrite(15, LOW);   // turn the LED off by making the voltage LOW
-  delay(100);                      // wait for a second
+  digitalWrite(15, HIGH);
+  delay(100);                    
+  digitalWrite(15, LOW); 
+  delay(100);  
 
   int periodInMicro = 1000000/PWM_FREQ;
   int onPeriod = 0;
   int offPeriod = 0;
   float divHunPeriod = 0;
   
+  int8_t deviceID = PRE_DEV_ID;
+  int8_t serverID = PRE_SERV_ID;
+
   divHunPeriod = periodInMicro/100;
 
   for(int i = 0; i<100; i++) {
@@ -35,17 +40,10 @@ void loop() {
 
   }
 
-
-
-  digitalWrite(15, HIGH);  // turn the LED on (HIGH is the voltage level)
-  delay(1000);                      // wait for a second
-  digitalWrite(15, LOW);   // turn the LED off by making the voltage LOW
-  delay(1000);   
-
 }
 
 void inputPressed() {
 
-  
+
 
 }
